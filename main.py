@@ -21,16 +21,26 @@ if __name__ == "__main__":
     rectangulos = leer_rectangulos(archivo_rectangulos)
 
     total_rectangulos = len(rectangulos)
-    tamanos_pruebas = [total_rectangulos // 4, total_rectangulos // 2, (3 * total_rectangulos) // 4, total_rectangulos]
+    intervalo = total_rectangulos // 20
+    resultados = []
 
-    print(f"Ejecutando pruebas con {total_rectangulos} rectángulos en 4 etapas...")
+    print(f"Ejecutando pruebas con {total_rectangulos} rectángulos en 20 etapas...")
 
-    for n in tamanos_pruebas:
+    for i in range(1, 21):
+        n = i * intervalo
         subconjunto = rectangulos[:n]
         print(f"\n🔹 Prueba con {n} rectángulos:")
 
         area_iter, tiempo_iter = medir_tiempo(area_union_rectangulos, subconjunto)
-        print(f"📌 Iterativo - Área: {area_iter}, Tiempo: {tiempo_iter} ns")
-
         area_rec, tiempo_rec = medir_tiempo(area_union, subconjunto)
+        
+        print(f"📌 Iterativo - Área: {area_iter}, Tiempo: {tiempo_iter} ns")
         print(f"📌 Recursivo - Área: {area_rec}, Tiempo: {tiempo_rec} ns")
+        
+        resultados.append((n, tiempo_iter, tiempo_rec))
+
+    # Guardar resultados en timestamps.txt
+    with open('timestamps.txt', 'w') as f:
+        f.write("Rectángulos,Tiempo_Iterativo(ns),Tiempo_Recursivo(ns)\n")
+        for n, t_iter, t_rec in resultados:
+            f.write(f"{n},{t_iter},{t_rec}\n")
