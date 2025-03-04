@@ -1,7 +1,7 @@
 import sys
 import time
 from leer_rectangulos import leer_rectangulos
-from iterativo import area_union_rectangulos
+from iterativo import calcular_area_total
 from recursivo import area_union
 
 
@@ -31,12 +31,12 @@ if __name__ == "__main__":
         subconjunto = rectangulos[:n]
         print(f"\n🔹 Prueba con {n} rectángulos:")
 
-        area_iter, tiempo_iter = medir_tiempo(area_union_rectangulos, subconjunto)
+        area_iter, tiempo_iter = medir_tiempo(calcular_area_total, subconjunto)
         area_rec, tiempo_rec = medir_tiempo(area_union, subconjunto)
-        
+
         print(f"📌 Iterativo - Área: {area_iter}, Tiempo: {tiempo_iter} ns")
         print(f"📌 Recursivo - Área: {area_rec}, Tiempo: {tiempo_rec} ns")
-        
+
         resultados.append((n, tiempo_iter, tiempo_rec))
 
     # Guardar resultados en timestamps.txt

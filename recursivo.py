@@ -1,9 +1,18 @@
 def area_del_rectangulo(rectangulo):
+    """
+    Calcula el área de un rectángulo dado en forma (x1, y1, x2, y2),
+    donde (x1, y1) es la esquina superior izquierda
+    y (x2, y2) es la esquina inferior derecha.
+    """
     x1, y1, x2, y2 = rectangulo
     return max(0, x2 - x1) * max(0, y1 - y2)
 
 
 def interseccion_rectas(r1, r2):
+    """
+    Retorna la intersección de dos rectángulos r1 y r2 en forma (x1, y1, x2, y2).
+    Si no se intersectan, retorna None.
+    """
     x1a, y1a, x2a, y2a = r1
     x1b, y1b, x2b, y2b = r2
 
@@ -14,14 +23,21 @@ def interseccion_rectas(r1, r2):
 
     if x_left < x_right and y_bottom < y_top:
         return (x_left, y_top, x_right, y_bottom)
-    return None
+    else:
+        return None
 
 
 def area_union(rectangles):
+    """
+    Función principal que llama a la función auxiliar recursiva.
+    """
     return area_union_aux(rectangles, 0, len(rectangles))
 
 
 def area_union_aux(rectangles, begin, end):
+    """
+    Función auxiliar que maneja la recursión de la unión de áreas de rectángulos.
+    """
     if end - begin == 0:
         return 0
     if end - begin == 1:

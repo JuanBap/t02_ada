@@ -1,46 +1,34 @@
-def calcular_cobertura(intervalos):
-    if not intervalos:
-        return 0
+def calcular_area_total(rectangulos):
+    def interseccion(r1, r2):
+        """ Calcula la intersección entre dos rectángulos dados en formato (x1, y1, x2, y2) """
+        x1 = max(r1[0], r2[0])
+        y1 = min(r1[1], r2[1])  # Máxima altura de la intersección
+        x2 = min(r1[2], r2[2])
+        y2 = max(r1[3], r2[3])  # Mínima base de la intersección
 
-    intervalos_ordenados = sorted(intervalos, key=lambda inter: inter[0])
-    cobertura = 0
-    y_actual_inf, y_actual_sup = intervalos_ordenados[0]
+        if x1 < x2 and y1 > y2:  # Si hay una intersección válida
+            return (x1, y1, x2, y2)
+        return None
 
-    for i in range(1, len(intervalos_ordenados)):
-        y_inf, y_sup = intervalos_ordenados[i]
-        if y_inf > y_actual_sup:
-            cobertura += (y_actual_sup - y_actual_inf)
-            y_actual_inf, y_actual_sup = y_inf, y_sup
-        else:
-            y_actual_sup = max(y_actual_sup, y_sup)
+    def area(r):
+        """ Calcula el área de un rectángulo dado """
+        return (r[2] - r[0]) * (r[1] - r[3])
 
-    cobertura += (y_actual_sup - y_actual_inf)
-    return cobertura
-
-
-def area_union_rectangulos(rectangulos):
-    eventos = []
-    for (xu, yu, xd, yd) in rectangulos:
-        eventos.append((xu, +1, yd, yu))
-        eventos.append((xd, -1, yd, yu))
-
-    eventos.sort(key=lambda e: e[0])
-
-    intervalos_activos = []
-    x_anterior = None
     area_total = 0
+    rectangulos_previos = []  # Lista para almacenar rectángulos ya procesados
 
-    for i, (x, tipo, y_inf, y_sup) in enumerate(eventos):
-        if x_anterior is not None and x != x_anterior:
-            cobertura_y = calcular_cobertura(intervalos_activos)
-            delta_x = x - x_anterior
-            area_total += cobertura_y * delta_x
+    for rect in rectangulos:
+        nueva_area = area(rect)
+        area_intersecciones = 0
 
-        if tipo == +1:
-            intervalos_activos.append((y_inf, y_sup))
-        else:
-            intervalos_activos.remove((y_inf, y_sup))
+        # Comparar con todos los rectángulos anteriores para restar intersecciones
+        for rect_anterior in rectangulos_previos:
+            inter = interseccion(rect_anterior, rect)
+            if inter:
+                area_intersecciones += area(inter)
 
-        x_anterior = x
+        # Sumar solo el área no cubierta previamente
+        area_total += nueva_area - area_intersecciones
+        rectangulos_previos.append(rect)  # Agregar rectángulo actual a la lista
 
     return area_total
