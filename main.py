@@ -40,7 +40,7 @@ if __name__ == "__main__":
         resultados.append((n, tiempo_iter, tiempo_rec))
 
     # Guardar resultados en timestamps.txt
-    with open('timestamps.txt', 'w') as f:
+    with open('experimentos/timestamps.txt', 'w') as f:
         f.write("Rectángulos,Tiempo_Iterativo(ns),Tiempo_Recursivo(ns)\n")
         for n, t_iter, t_rec in resultados:
             f.write(f"{n},{t_iter},{t_rec}\n")

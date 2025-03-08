@@ -3,7 +3,7 @@ import pandas as pd
 
 def visualizar_tiempos():
     # Leer los datos del archivo
-    df = pd.read_csv('timestamps.txt')
+    df = pd.read_csv('experimentos/timestamps.txt')
     
     # Crear la gráfica
     plt.figure(figsize=(10, 6))
